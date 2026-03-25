@@ -1,0 +1,101 @@
+<!DOCTYPE html><html>
+<head>
+<title>Letter Global Chat</title><meta name="viewport" content="width=device-width, initial-scale=1"><style>
+
+body{
+font-family:Arial;
+background:#f2f2f2;
+text-align:center;
+margin:0;
+}
+
+header{
+background:#4a6ee0;
+color:white;
+padding:15px;
+font-size:22px;
+}
+
+#chat{
+width:90%;
+max-width:600px;
+margin:20px auto;
+background:white;
+height:350px;
+overflow:auto;
+padding:10px;
+border-radius:8px;
+}
+
+.message{
+border-bottom:1px solid #ddd;
+padding:5px;
+text-align:left;
+}
+
+input{
+padding:10px;
+margin:5px;
+}
+
+button{
+padding:10px;
+background:#4a6ee0;
+color:white;
+border:none;
+}
+
+</style></head><body><header>📖 Letter Global Chat</header><div id="chat"></div><input id="msg" placeholder="Write message">
+<button onclick="sendMsg()">Send</button><script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+const firebaseConfig = {
+  apiKey: "AIzaSyAVi_wlqCjKJr3FuLcE2KFWamjsvMdFj60",
+  authDomain: "letter-chat-94869.firebaseapp.com",
+  projectId: "letter-chat-94869",
+  storageBucket: "letter-chat-94869.firebasestorage.app",
+  messagingSenderId: "488741815358",
+  appId: "1:488741815358:web:87d85421c60a0e420efd6f"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+let chat=document.getElementById("chat")
+
+let username="User"+Math.floor(Math.random()*10000)
+
+window.sendMsg=function(){
+
+let msg=document.getElementById("msg").value
+
+if(msg=="") return
+
+push(ref(db,"messages"),{
+name:username,
+msg:msg
+})
+
+document.getElementById("msg").value=""
+
+}
+
+onChildAdded(ref(db,"messages"),(data)=>{
+
+let m=data.val()
+
+let div=document.createElement("div")
+div.className="message"
+div.textContent=m.name+": "+m.msg
+
+chat.appendChild(div)
+
+chat.scrollTop=chat.scrollHeight
+
+})
+
+</script></body>
+</html>
